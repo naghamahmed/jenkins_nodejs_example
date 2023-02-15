@@ -11,9 +11,14 @@ resource "aws_db_instance" "rds" {
   engine               = "mysql"
   engine_version       = "5.7"
   instance_class       = "db.t2.micro"
-  username             = "nagham"
-  password             = "password"
+  username             = var.RDS_USERNAME
+  password             = var.RDS_PASSWORD
   skip_final_snapshot  = true
+  port                 = "3306"
+  
+  provisioner "local-exec" {
+    command = "export RDS_HOSTNAME=${self.address}"
+  }
 }
 
 #create Elasticashe redis_db
@@ -26,4 +31,9 @@ resource "aws_elasticache_cluster" "elasticashe" {
   parameter_group_name = "default.redis3.2"
   engine_version       = "3.2.10"
   port                 = 6379
+
+  provisioner "local-exec"{
+    command = "export REDIS_HOSTNAME=${self.cache_nodes.address}"
+  }
+
 }
