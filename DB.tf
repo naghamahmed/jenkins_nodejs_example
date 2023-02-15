@@ -33,7 +33,7 @@ resource "aws_elasticache_cluster" "elasticashe" {
   port                 = 6379
 
   provisioner "local-exec"{
-    command = "export REDIS_HOSTNAME=${self.cache_nodes.address}"
+    command = "export REDIS_HOSTNAME=${self.cache_nodes.0.address}"
   }
 
 }
